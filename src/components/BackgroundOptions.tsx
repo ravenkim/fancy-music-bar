@@ -1,6 +1,5 @@
 import React from 'react';
-
-type BackgroundType = 'default' | 'image' | 'video';
+import type { BackgroundType } from '../types';
 
 interface BackgroundOptionsProps {
   onBackgroundChange: (type: BackgroundType, value: string) => void;
