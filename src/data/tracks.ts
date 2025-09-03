@@ -1,6 +1,4 @@
-import type { Track } from '../types';
-
-export const tracks: Track[] = [
+export const tracks = [
   {
     id: 1,
     title: 'Ambient Classical Guitar',

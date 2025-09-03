@@ -1,5 +1,13 @@
 import React, {useState} from 'react';
-import type { Track } from '../types';
+
+// Define type locally for debugging
+type Track = {
+  id: number;
+  title: string;
+  artist: string;
+  audioSrc: string | null;
+  videoUrl: string;
+}
 
 interface YouTubeSearchProps {
   onAddTrack: (track: Track) => void;
