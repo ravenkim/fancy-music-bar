@@ -24,9 +24,15 @@ const DrawerButton: React.FC<DrawerButtonProps> = ({
             <DrawerContent
                 className={'w-200'}
             >
-                <DrawerHeader>
-                    <DrawerTitle>사이드 메뉴</DrawerTitle>
-                    <DrawerDescription>왼쪽에서 열리는 Drawer</DrawerDescription>
+                <DrawerHeader
+
+                >
+                    <DrawerTitle
+                        className={'text-white'}
+                    >배경 선택</DrawerTitle>
+                    <DrawerDescription
+                        className={'text-white'}
+                    >원하는 배경을 골라주세요</DrawerDescription>
                 </DrawerHeader>
                 {drawerContent}
             </DrawerContent>
