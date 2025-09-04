@@ -24,9 +24,10 @@ const DrawerButton: React.FC<DrawerButtonProps> = ({
 
 
                 <Drawer.Content className="fixed top-0 bottom-0 left-0 h-full w-80 bg-gray-900 outline-none">
-                    <Drawer.Title className={'text-white'}>
-                        asd
+                    <Drawer.Title>
+
                     </Drawer.Title>
+                    <Drawer.Description/>
                     {drawerContent}
                 </Drawer.Content>
             </Drawer.Portal>

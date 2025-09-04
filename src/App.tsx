@@ -1,9 +1,9 @@
 import FloatingButtons from './components/FloatingButtons'
 
 import './App.css'
-import Prism from './bg/Prism.tsx'
-import Hyperspeed from './bg/hyperspeed/Hyperspeed.tsx'
-import { hyperspeedPresets } from './bg/hyperspeed/hyperspeedPresets.ts'
+// import Prism from './bg/Prism.tsx'
+// import Hyperspeed from './bg/hyperspeed/Hyperspeed.tsx'
+// import { hyperspeedPresets } from './bg/hyperspeed/hyperspeedPresets.ts'
 
 function App() {
     return (
@@ -21,7 +21,7 @@ function App() {
                 {/*    glow={1}*/}
                 {/*/>*/}
 
-                <Hyperspeed effectOptions={hyperspeedPresets.one} />
+                {/*<Hyperspeed effectOptions={hyperspeedPresets.one} />*/}
             </div>
 
             <FloatingButtons />
