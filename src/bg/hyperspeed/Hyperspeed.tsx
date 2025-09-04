@@ -1018,43 +1018,6 @@ function resizeRendererToDisplaySize(
     }
     return needResize
 }
-type UniformValue =
-    | number
-    | boolean
-    | THREE.Color
-    | THREE.Vector2
-    | THREE.Vector3
-    | THREE.Vector4
-    | THREE.Texture
-    | THREE.Matrix4
-
-type Uniforms = Record<string, { value: UniformValue }>
-
-interface Distortion {
-    uniforms: Uniforms
-    getDistortion: string
-    getJS?: (progress: number, time: number) => THREE.Vector3
-}
-
-interface Distortions {
-    [key: string]: Distortion
-}
-
-interface SMAAAssets {
-    search?: HTMLImageElement
-    area?: HTMLImageElement
-}
-
-interface Assets {
-    smaa?: SMAAAssets
-}
-
-type FogUniforms = {
-    fogColor: { value: THREE.Color }
-    fogNear: { value: number }
-    fogFar: { value: number }
-}
-
 
 class App {
     container: HTMLElement
@@ -1066,13 +1029,13 @@ class App {
     renderPass!: RenderPass
     bloomPass!: EffectPass
     clock: THREE.Clock
-    assets: Assets
+    assets: Record<string, any>
     disposed: boolean
     road: Road
     leftCarLights: CarLights
     rightCarLights: CarLights
     leftSticks: LightsSticks
-    fogUniforms: FogUniforms
+    fogUniforms: Record<string, { value: any }>
     fovTarget: number
     speedUpTarget: number
     speedUp: number
