@@ -1,4 +1,6 @@
-import { useEffect, useRef, FC } from 'react'
+import { useEffect, useRef } from 'react'
+import type { FC } from 'react'
+
 import * as THREE from 'three'
 import {
     BloomEffect,
@@ -1016,6 +1018,43 @@ function resizeRendererToDisplaySize(
     }
     return needResize
 }
+type UniformValue =
+    | number
+    | boolean
+    | THREE.Color
+    | THREE.Vector2
+    | THREE.Vector3
+    | THREE.Vector4
+    | THREE.Texture
+    | THREE.Matrix4
+
+type Uniforms = Record<string, { value: UniformValue }>
+
+interface Distortion {
+    uniforms: Uniforms
+    getDistortion: string
+    getJS?: (progress: number, time: number) => THREE.Vector3
+}
+
+interface Distortions {
+    [key: string]: Distortion
+}
+
+interface SMAAAssets {
+    search?: HTMLImageElement
+    area?: HTMLImageElement
+}
+
+interface Assets {
+    smaa?: SMAAAssets
+}
+
+type FogUniforms = {
+    fogColor: { value: THREE.Color }
+    fogNear: { value: number }
+    fogFar: { value: number }
+}
+
 
 class App {
     container: HTMLElement
@@ -1027,13 +1066,13 @@ class App {
     renderPass!: RenderPass
     bloomPass!: EffectPass
     clock: THREE.Clock
-    assets: Record<string, any>
+    assets: Assets
     disposed: boolean
     road: Road
     leftCarLights: CarLights
     rightCarLights: CarLights
     leftSticks: LightsSticks
-    fogUniforms: Record<string, { value: any }>
+    fogUniforms: FogUniforms
     fovTarget: number
     speedUpTarget: number
     speedUp: number
@@ -1351,14 +1390,16 @@ class App {
 }
 
 const Hyperspeed: FC<HyperspeedProps> = ({ effectOptions = {} }) => {
-    const mergedOptions: HyperspeedOptions = {
-        ...defaultOptions,
-        ...effectOptions,
-    }
+
+
     const hyperspeed = useRef<HTMLDivElement>(null)
     const appRef = useRef<App | null>(null)
 
     useEffect(() => {
+        const mergedOptions: HyperspeedOptions = {
+            ...defaultOptions,
+            ...effectOptions,
+        }
         if (appRef.current) {
             appRef.current.dispose()
             const container = document.getElementById('lights')
@@ -1386,7 +1427,7 @@ const Hyperspeed: FC<HyperspeedProps> = ({ effectOptions = {} }) => {
                 appRef.current.dispose()
             }
         }
-    }, [mergedOptions])
+    }, [effectOptions])
 
     return <div id="lights" className="h-full w-full" ref={hyperspeed}></div>
 }
