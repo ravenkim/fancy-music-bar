@@ -3,9 +3,9 @@ import {ScrollArea} from "./ScrollArea.tsx";
 const SelectBg = () => {
     return (
         <ScrollArea
-            className={'w-screen h-200 overflow-auto'}
+            className={'w-full h-200 overflow-auto bg-amber-700'}
         >
-            <div className="h-400 w-30 bg-amber-700"></div>
+            <div className="h-400 w-fullbg-amber-100"></div>
 
 
         </ScrollArea>

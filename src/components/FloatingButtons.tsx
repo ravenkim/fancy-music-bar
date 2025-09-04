@@ -53,8 +53,8 @@ const FloatingButtons: React.FC = () => {
 
     return (
         <div
-            className={`fixed right-5 bottom-5 flex flex-col gap-2 opacity-0 transition-opacity duration-300 ease-in-out ${
-                showButtons ? 'opacity-100' : 'opacity-0'
+            className={`fixed right-5 bottom-5 flex flex-col gap-2 ${
+                showButtons ? 'flex' : 'hidden'
             }`}
         >
             <button

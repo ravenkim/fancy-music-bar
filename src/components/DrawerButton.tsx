@@ -1,5 +1,5 @@
 import React from 'react'
-import { Drawer } from 'vaul'
+import {Drawer, DrawerContent, DrawerDescription, DrawerHeader, DrawerTitle, DrawerTrigger} from "./Drawer.tsx";
 
 interface DrawerButtonProps {
     icon: React.ReactNode
@@ -13,25 +13,41 @@ const DrawerButton: React.FC<DrawerButtonProps> = ({
     direction = 'left',
 }) => {
     return (
-        <Drawer.Root direction={direction}>
-            <Drawer.Trigger asChild>
+        <Drawer
+            direction={direction}
+        >
+            <DrawerTrigger asChild>
                 <button className="flex h-14 w-14 items-center justify-center rounded-full bg-gray-800 shadow-md">
-                    {icon}
+                          {icon}
                 </button>
-            </Drawer.Trigger>
-            <Drawer.Portal>
-                <Drawer.Overlay className="fixed inset-0 bg-black/40" />
+            </DrawerTrigger>
+            <DrawerContent
+                className={'w-200'}
+            >
+                <DrawerHeader>
+                    <DrawerTitle>사이드 메뉴</DrawerTitle>
+                    <DrawerDescription>왼쪽에서 열리는 Drawer</DrawerDescription>
+                </DrawerHeader>
+                {drawerContent}
+            </DrawerContent>
+        </Drawer>
 
 
-                <Drawer.Content className="fixed top-0 bottom-0 left-0 h-full w-80 bg-gray-900 outline-none">
-                    <Drawer.Title>
+        // <Drawer.Root direction={direction}>
 
-                    </Drawer.Title>
-                    <Drawer.Description/>
-                    {drawerContent}
-                </Drawer.Content>
-            </Drawer.Portal>
-        </Drawer.Root>
+        //     <Drawer.Portal>
+        //         <Drawer.Overlay className="fixed inset-0 bg-black/40" />
+        //
+        //
+        //         <Drawer.Content className="fixed top-0 bottom-0 left-0 h-full w-80 bg-gray-900 outline-none">
+        //             <Drawer.Title>
+        //
+        //             </Drawer.Title>
+        //             <Drawer.Description/>
+        //
+        //         </Drawer.Content>
+        //     </Drawer.Portal>
+        // </Drawer.Root>
     )
 }
 
