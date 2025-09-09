@@ -47,9 +47,9 @@ interface Colors {
     background: number
     shoulderLines: number
     brokenLines: number
-    leftCars: number[]
-    rightCars: number[]
-    sticks: number
+    readonly leftCars: readonly number[]
+    readonly rightCars: readonly number[]
+    sticks: number | readonly number[]
 }
 
 interface HyperspeedOptions {
@@ -69,16 +69,16 @@ interface HyperspeedOptions {
     shoulderLinesWidthPercentage: number
     brokenLinesWidthPercentage: number
     brokenLinesLengthPercentage: number
-    lightStickWidth: [number, number]
-    lightStickHeight: [number, number]
-    movingAwaySpeed: [number, number]
-    movingCloserSpeed: [number, number]
-    carLightsLength: [number, number]
-    carLightsRadius: [number, number]
-    carWidthPercentage: [number, number]
-    carShiftX: [number, number]
-    carFloorSeparation: [number, number]
-    colors: Colors
+    readonly lightStickWidth: readonly [number, number]
+    readonly lightStickHeight: readonly [number, number]
+    readonly movingAwaySpeed: readonly [number, number]
+    readonly movingCloserSpeed: readonly [number, number]
+    readonly carLightsLength: readonly [number, number]
+    readonly carLightsRadius: readonly [number, number]
+    readonly carWidthPercentage: readonly [number, number]
+    readonly carShiftX: readonly [number, number]
+    readonly carFloorSeparation: readonly [number, number]
+    readonly colors: Colors
     isHyper?: boolean
 }
 
@@ -86,7 +86,7 @@ interface HyperspeedProps {
     effectOptions?: Partial<HyperspeedOptions>
 }
 
-const defaultOptions: HyperspeedOptions = {
+const defaultOptions = {
     onSpeedUp: () => {},
     onSlowDown: () => {},
     distortion: 'turbulentDistortion',
@@ -122,7 +122,7 @@ const defaultOptions: HyperspeedOptions = {
         rightCars: [0x03b3c3, 0x0e5ea5, 0x324555],
         sticks: 0x03b3c3,
     },
-}
+} as const;
 
 function nsin(val: number) {
     return Math.sin(val) * 0.5 + 0.5
@@ -459,18 +459,18 @@ const distortion_vertex = `
   }
 `
 
-function random(base: number | [number, number]): number {
-    if (Array.isArray(base)) {
-        return Math.random() * (base[1] - base[0]) + base[0]
+function random(base: number | readonly [number, number]): number {
+    if (typeof base === 'number') {
+        return Math.random() * base
     }
-    return Math.random() * base
+    return Math.random() * (base[1] - base[0]) + base[0]
 }
 
-function pickRandom<T>(arr: T | T[]): T {
+function pickRandom<T>(arr: T | readonly T[]): T {
     if (Array.isArray(arr)) {
         return arr[Math.floor(Math.random() * arr.length)]
     }
-    return arr
+    return arr as T
 }
 
 function lerp(
@@ -489,16 +489,16 @@ function lerp(
 class CarLights {
     webgl: App
     options: HyperspeedOptions
-    colors: number[] | THREE.Color
-    speed: [number, number]
+    readonly colors: readonly number[] | THREE.Color
+    readonly speed: readonly [number, number]
     fade: THREE.Vector2
     mesh!: THREE.Mesh<THREE.InstancedBufferGeometry, THREE.ShaderMaterial>
 
     constructor(
         webgl: App,
         options: HyperspeedOptions,
-        colors: number[] | THREE.Color,
-        speed: [number, number],
+        colors: readonly number[] | THREE.Color,
+        speed: readonly [number, number],
         fade: THREE.Vector2,
     ) {
         this.webgl = webgl
@@ -537,7 +537,7 @@ class CarLights {
         if (Array.isArray(this.colors)) {
             colorArray = this.colors.map((c) => new THREE.Color(c))
         } else {
-            colorArray = [new THREE.Color(this.colors)]
+            colorArray = [new THREE.Color(this.colors as THREE.Color)]
         }
 
         for (let i = 0; i < options.lightPairsPerRoadWay; i++) {
@@ -729,7 +729,7 @@ class LightsSticks {
         if (Array.isArray(options.colors.sticks)) {
             colorArray = options.colors.sticks.map((c) => new THREE.Color(c))
         } else {
-            colorArray = [new THREE.Color(options.colors.sticks)]
+            colorArray = [new THREE.Color(options.colors.sticks as number)]
         }
 
         for (let i = 0; i < totalSticks; i++) {
@@ -877,7 +877,7 @@ class Road {
         this.uTime = { value: 0 }
     }
 
-    createPlane(side: number, width: number, isRoad: boolean) {
+    createPlane(side: number, isRoad: boolean) {
         const options = this.options
         const segments = 100
         const geometry = new THREE.PlaneGeometry(
@@ -953,9 +953,9 @@ class Road {
     }
 
     init() {
-        this.leftRoadWay = this.createPlane(-1, this.options.roadWidth, true)
-        this.rightRoadWay = this.createPlane(1, this.options.roadWidth, true)
-        this.island = this.createPlane(0, this.options.islandWidth, false)
+        this.leftRoadWay = this.createPlane(-1, true)
+        this.rightRoadWay = this.createPlane(1, true)
+        this.island = this.createPlane(0, false)
     }
 
     update(time: number) {
@@ -1410,9 +1410,14 @@ const Hyperspeed: FC<HyperspeedProps> = ({ effectOptions = {} }) => {
         const container = hyperspeed.current
         if (!container) return
 
-        const options = { ...mergedOptions }
-        if (typeof options.distortion === 'string') {
-            options.distortion = distortions[options.distortion]
+        const distortion =
+            typeof mergedOptions.distortion === 'string'
+                ? distortions[mergedOptions.distortion]
+                : mergedOptions.distortion
+
+        const options = {
+            ...mergedOptions,
+            distortion,
         }
 
         const myApp = new App(container, options)

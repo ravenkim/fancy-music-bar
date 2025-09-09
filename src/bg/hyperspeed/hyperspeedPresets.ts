@@ -222,4 +222,4 @@ export const hyperspeedPresets = {
             sticks: 0xfdfdf0,
         },
     },
-}
+} as const;
