@@ -82,7 +82,7 @@ function useLocalStorage<T>(
                 handleCustomStorageChange as EventListener,
             )
         }
-    }, [key]) // Re-run effect if key changes
+    }, [key, readValue]) // Add readValue to dependency array
 
     return [storedValue, setValue]
 }

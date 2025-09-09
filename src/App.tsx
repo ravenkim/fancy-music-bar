@@ -1,4 +1,3 @@
-import React from 'react' // Removed useRef, useEffect, useState as they are now in DisplayText
 import FloatingButtons from './components/FloatingButtons'
 import './App.css'
 import useLocalStorage from './hooks/useLocalStorage.ts'
