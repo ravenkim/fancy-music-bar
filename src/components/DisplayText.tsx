@@ -31,17 +31,16 @@ const DisplayText = () => {
     return (
         <div
             ref={textRef}
+            className={`absolute text-white whitespace-pre-wrap pointer-events-none z-[999] ${
+                textAlign === 'center' ? 'text-center' :
+                textAlign === 'left' ? 'text-left' :
+                textAlign === 'right' ? 'text-right' : ''
+            }`}
             style={{
-                position: 'absolute',
                 left: `${centerX + offsetX}px`,
                 top: `${centerY + offsetY}px`,
                 fontSize: `${fontSize}px`,
                 lineHeight: `${lineHeight}`,
-                textAlign: `${textAlign}`,
-                color: 'white', // Assuming a dark background, make text white
-                whiteSpace: 'pre-wrap', // Preserve whitespace and newlines, and wrap text
-                pointerEvents: 'none', // Allow clicks to pass through to elements below
-                zIndex: 999, // Ensure text is above background but below controls
             }}
         >
             {displayText}
