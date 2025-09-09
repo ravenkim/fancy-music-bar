@@ -12,13 +12,17 @@ interface DrawerButtonProps {
     icon: React.ReactNode
     drawerContent: React.ReactNode
     direction?: 'left' | 'right' | 'top' | 'bottom'
+    title: string
+    description: string
 }
 
 const DrawerButton: React.FC<DrawerButtonProps> = ({
-    icon,
-    drawerContent,
-    direction = 'left',
-}) => {
+                                                       icon,
+                                                       drawerContent,
+                                                       direction = 'left',
+                                                       title,
+                                                       description,
+                                                   }) => {
     return (
         <Drawer direction={direction}>
             <DrawerTrigger asChild>
@@ -29,11 +33,10 @@ const DrawerButton: React.FC<DrawerButtonProps> = ({
             <DrawerContent className={'w-200'}>
                 <DrawerHeader>
                     <DrawerTitle className={'text-white'}>
-                        배경 선택
+                        {title}
                     </DrawerTitle>
                     <DrawerDescription className={'text-white'}>
-                        원하는 배경을 골라주세요
-                    </DrawerDescription>
+                        {description}                    </DrawerDescription>
                 </DrawerHeader>
                 {drawerContent}
             </DrawerContent>

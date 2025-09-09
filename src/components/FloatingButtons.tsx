@@ -1,9 +1,10 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
-import { Fullscreen, Monitor } from 'lucide-react'
+import { Fullscreen, Monitor, Pencil } from 'lucide-react'
 import DrawerButton from './DrawerButton'
 import SelectBg from './SelectBg.tsx'
 
 import type { Dispatch, SetStateAction } from 'react'
+import SelectText from "./SelectText.tsx";
 
 interface FloatingButtonsProps {
     setBg: Dispatch<SetStateAction<string>>
@@ -72,7 +73,17 @@ const FloatingButtons: React.FC<FloatingButtonsProps> = ({ setBg }) => {
             {/*  drawerContent={<div>Music Drawer Content</div>}*/}
             {/*/>*/}
 
+
             <DrawerButton
+                title={'글자'}
+                description={'원하는 글자를 선택하세요'}
+                icon={<Pencil color="white" size={24} />}
+                drawerContent={<SelectText />}
+            />
+
+            <DrawerButton
+                title={'배경선택'}
+                description={'원하는 배경을 선택하세요'}
                 icon={<Monitor color="white" size={24} />}
                 drawerContent={<SelectBg setBg={setBg} />}
             />
