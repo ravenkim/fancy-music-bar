@@ -1,10 +1,9 @@
+import type { Dispatch, SetStateAction } from 'react'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { Fullscreen, Monitor, Pencil } from 'lucide-react'
 import DrawerButton from './DrawerButton'
 import SelectBg from './SelectBg.tsx'
-
-import type { Dispatch, SetStateAction } from 'react'
-import SelectText from "./SelectText.tsx";
+import SelectText from './SelectText.tsx'
 
 interface FloatingButtonsProps {
     setBg: Dispatch<SetStateAction<string>>
@@ -72,7 +71,6 @@ const FloatingButtons: React.FC<FloatingButtonsProps> = ({ setBg }) => {
             {/*  icon={<Music color="white" size={24} />}*/}
             {/*  drawerContent={<div>Music Drawer Content</div>}*/}
             {/*/>*/}
-
 
             <DrawerButton
                 title={'글자'}

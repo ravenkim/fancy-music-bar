@@ -17,12 +17,12 @@ interface DrawerButtonProps {
 }
 
 const DrawerButton: React.FC<DrawerButtonProps> = ({
-                                                       icon,
-                                                       drawerContent,
-                                                       direction = 'left',
-                                                       title,
-                                                       description,
-                                                   }) => {
+    icon,
+    drawerContent,
+    direction = 'left',
+    title,
+    description,
+}) => {
     return (
         <Drawer direction={direction}>
             <DrawerTrigger asChild>
@@ -32,11 +32,10 @@ const DrawerButton: React.FC<DrawerButtonProps> = ({
             </DrawerTrigger>
             <DrawerContent className={'w-200'}>
                 <DrawerHeader>
-                    <DrawerTitle className={'text-white'}>
-                        {title}
-                    </DrawerTitle>
+                    <DrawerTitle className={'text-white'}>{title}</DrawerTitle>
                     <DrawerDescription className={'text-white'}>
-                        {description}                    </DrawerDescription>
+                        {description}{' '}
+                    </DrawerDescription>
                 </DrawerHeader>
                 {drawerContent}
             </DrawerContent>
