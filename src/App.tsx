@@ -5,6 +5,7 @@ import Prism from './bg/Prism.tsx'
 import Hyperspeed from './bg/hyperspeed/Hyperspeed.tsx'
 import { hyperspeedPresets } from './bg/hyperspeed/hyperspeedPresets.ts'
 import { useState } from 'react'
+import Silk from "./bg/Silk.tsx";
 
 function App() {
     const [bg, setBg] = useState('prism')
@@ -29,6 +30,15 @@ function App() {
                 {bg === 'hyperspeed' && (
                     <Hyperspeed effectOptions={hyperspeedPresets.one} />
                 )}
+
+                {bg === 'silk' && (
+                    <Silk
+                        speed={5}
+                        scale={1}
+                        color="#7B7481"
+                        noiseIntensity={1.5}
+                        rotation={0}
+                    />                )}
             </div>
 
             <FloatingButtons setBg={setBg} />

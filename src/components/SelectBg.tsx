@@ -4,6 +4,7 @@ import { ScrollArea } from './ScrollArea.tsx'
 import Prism from "../bg/Prism.tsx";
 import Hyperspeed from "../bg/hyperspeed/Hyperspeed.tsx";
 import {hyperspeedPresets} from "../bg/hyperspeed/hyperspeedPresets.ts";
+import Silk from "../bg/Silk.tsx";
 
 interface SelectBgProps {
     setBg: Dispatch<SetStateAction<string>>
@@ -13,6 +14,7 @@ const backgrounds = [
     { id: 'off', name: 'Off' },
     { id: 'prism', name: 'Prism' },
     { id: 'hyperspeed', name: 'Hyperspeed' },
+    { id: 'silk', name: 'Silk' },
 ]
 
 const BgPreview: React.FC<{ bgId: string }> = ({ bgId }) => {
@@ -34,6 +36,19 @@ const BgPreview: React.FC<{ bgId: string }> = ({ bgId }) => {
             return (
                 <div className="relative h-full w-full overflow-hidden bg-black">
                     <Hyperspeed effectOptions={hyperspeedPresets.one} />
+                </div>
+            )
+
+        case 'silk':
+            return (
+                <div className="relative h-full w-full overflow-hidden bg-black">
+                    <Silk
+                        speed={5}
+                        scale={1}
+                        color="#7B7481"
+                        noiseIntensity={1.5}
+                        rotation={0}
+                    />
                 </div>
             )
         default:
