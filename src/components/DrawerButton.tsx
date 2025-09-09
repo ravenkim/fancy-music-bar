@@ -1,5 +1,12 @@
 import React from 'react'
-import {Drawer, DrawerContent, DrawerDescription, DrawerHeader, DrawerTitle, DrawerTrigger} from "./Drawer.tsx";
+import {
+    Drawer,
+    DrawerContent,
+    DrawerDescription,
+    DrawerHeader,
+    DrawerTitle,
+    DrawerTrigger,
+} from './Drawer.tsx'
 
 interface DrawerButtonProps {
     icon: React.ReactNode
@@ -13,31 +20,24 @@ const DrawerButton: React.FC<DrawerButtonProps> = ({
     direction = 'left',
 }) => {
     return (
-        <Drawer
-            direction={direction}
-        >
+        <Drawer direction={direction}>
             <DrawerTrigger asChild>
                 <button className="flex h-14 w-14 items-center justify-center rounded-full bg-gray-800 shadow-md">
-                          {icon}
+                    {icon}
                 </button>
             </DrawerTrigger>
-            <DrawerContent
-                className={'w-200'}
-            >
-                <DrawerHeader
-
-                >
-                    <DrawerTitle
-                        className={'text-white'}
-                    >배경 선택</DrawerTitle>
-                    <DrawerDescription
-                        className={'text-white'}
-                    >원하는 배경을 골라주세요</DrawerDescription>
+            <DrawerContent className={'w-200'}>
+                <DrawerHeader>
+                    <DrawerTitle className={'text-white'}>
+                        배경 선택
+                    </DrawerTitle>
+                    <DrawerDescription className={'text-white'}>
+                        원하는 배경을 골라주세요
+                    </DrawerDescription>
                 </DrawerHeader>
                 {drawerContent}
             </DrawerContent>
         </Drawer>
-
 
         // <Drawer.Root direction={direction}>
 

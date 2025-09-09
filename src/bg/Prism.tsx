@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react'
-import { Renderer, Triangle, Program, Mesh } from 'ogl'
+import { Mesh, Program, Renderer, Triangle } from 'ogl'
 
 type PrismProps = {
     height?: number
@@ -420,19 +420,23 @@ const Prism: React.FC<PrismProps> = ({
             }
         }
 
+        interface PrismContainer extends HTMLElement {
+            __prismIO?: IntersectionObserver
+        }
+
         if (suspendWhenOffscreen) {
             const io = new IntersectionObserver((entries) => {
                 const vis = entries.some((e) => e.isIntersecting)
                 if (vis) startRAF()
                 else stopRAF()
             })
+
+            ;(container as PrismContainer).__prismIO = io
             io.observe(container)
             startRAF()
-            ;(container as any).__prismIO = io
         } else {
             startRAF()
         }
-
         return () => {
             stopRAF()
             ro.disconnect()
@@ -446,11 +450,9 @@ const Prism: React.FC<PrismProps> = ({
                 window.removeEventListener('blur', onBlur)
             }
             if (suspendWhenOffscreen) {
-                const io = (container as any).__prismIO as
-                    | IntersectionObserver
-                    | undefined
+                const io = (container as PrismContainer).__prismIO
                 if (io) io.disconnect()
-                delete (container as any).__prismIO
+                delete (container as PrismContainer).__prismIO
             }
             if (gl.canvas.parentElement === container)
                 container.removeChild(gl.canvas)

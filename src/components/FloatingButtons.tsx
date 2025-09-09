@@ -1,13 +1,15 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
-import {
-    // Music,
-    Monitor,
-    Fullscreen,
-} from 'lucide-react'
+import { Fullscreen, Monitor } from 'lucide-react'
 import DrawerButton from './DrawerButton'
 import SelectBg from './SelectBg.tsx'
 
-const FloatingButtons: React.FC = () => {
+import type { Dispatch, SetStateAction } from 'react'
+
+interface FloatingButtonsProps {
+    setBg: Dispatch<SetStateAction<string>>
+}
+
+const FloatingButtons: React.FC<FloatingButtonsProps> = ({ setBg }) => {
     const [showButtons, setShowButtons] = useState(false)
     const timeoutRef = useRef<number | null>(null)
 
@@ -69,9 +71,10 @@ const FloatingButtons: React.FC = () => {
             {/*  icon={<Music color="white" size={24} />}*/}
             {/*  drawerContent={<div>Music Drawer Content</div>}*/}
             {/*/>*/}
+
             <DrawerButton
                 icon={<Monitor color="white" size={24} />}
-                drawerContent={<SelectBg />}
+                drawerContent={<SelectBg setBg={setBg} />}
             />
         </div>
     )

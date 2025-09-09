@@ -1,6 +1,4 @@
-import { useEffect, useRef } from 'react'
-import type { FC } from 'react'
-
+import { type FC, useEffect, useMemo, useRef } from 'react'
 import * as THREE from 'three'
 import {
     BloomEffect,
@@ -11,8 +9,30 @@ import {
     SMAAPreset,
 } from 'postprocessing'
 
+interface SMAAAssets {
+    search?: HTMLImageElement
+    area?: HTMLImageElement
+}
+
+interface Assets {
+    smaa?: SMAAAssets
+}
+
+type UniformValue =
+    | number
+    | boolean
+    | THREE.Color
+    | THREE.Vector2
+    | THREE.Vector3
+    | THREE.Vector4
+    | THREE.Matrix3
+    | THREE.Matrix4
+    | THREE.Texture
+
+type Uniforms = Record<string, { value: UniformValue }>
+
 interface Distortion {
-    uniforms: Record<string, { value: any }>
+    uniforms: Uniforms
     getDistortion: string
     getJS?: (progress: number, time: number) => THREE.Vector3
 }
@@ -496,9 +516,15 @@ class CarLights {
         )
         const geometry = new THREE.TubeGeometry(curve, 40, 1, 8, false)
 
-        const instanced = new THREE.InstancedBufferGeometry().copy(
-            geometry as any,
-        ) as THREE.InstancedBufferGeometry
+        const instanced = new THREE.InstancedBufferGeometry()
+
+        instanced.setAttribute('position', geometry.getAttribute('position'))
+        instanced.setAttribute('normal', geometry.getAttribute('normal'))
+        instanced.setAttribute('uv', geometry.getAttribute('uv'))
+        if (geometry.index) {
+            instanced.setIndex(geometry.index)
+        }
+
         instanced.instanceCount = options.lightPairsPerRoadWay * 2
 
         const laneWidth = options.roadWidth / options.lanesPerRoad
@@ -682,9 +708,15 @@ class LightsSticks {
     init() {
         const options = this.options
         const geometry = new THREE.PlaneGeometry(1, 1)
-        const instanced = new THREE.InstancedBufferGeometry().copy(
-            geometry as any,
-        ) as THREE.InstancedBufferGeometry
+        const instanced = new THREE.InstancedBufferGeometry()
+        instanced.setAttribute('position', geometry.getAttribute('position'))
+        instanced.setAttribute('normal', geometry.getAttribute('normal'))
+        instanced.setAttribute('uv', geometry.getAttribute('uv'))
+        if (geometry.index) {
+            instanced.setIndex(geometry.index)
+        }
+        instanced.instanceCount = options.totalSideLightSticks
+
         const totalSticks = options.totalSideLightSticks
         instanced.instanceCount = totalSticks
 
@@ -855,7 +887,7 @@ class Road {
             segments,
         )
 
-        let uniforms: Record<string, { value: any }> = {
+        let uniforms: Record<string, THREE.IUniform<number | THREE.Color>> = {
             uTravelLength: { value: options.length },
             uColor: {
                 value: new THREE.Color(
@@ -1029,13 +1061,13 @@ class App {
     renderPass!: RenderPass
     bloomPass!: EffectPass
     clock: THREE.Clock
-    assets: Record<string, any>
+    assets: Assets
     disposed: boolean
     road: Road
     leftCarLights: CarLights
     rightCarLights: CarLights
     leftSticks: LightsSticks
-    fogUniforms: Record<string, { value: any }>
+    fogUniforms: Uniforms
     fovTarget: number
     speedUpTarget: number
     speedUp: number
@@ -1167,21 +1199,25 @@ class App {
     }
 
     loadAssets(): Promise<void> {
-        const assets = this.assets
         return new Promise((resolve) => {
             const manager = new THREE.LoadingManager(resolve)
 
             const searchImage = new Image()
             const areaImage = new Image()
-            assets.smaa = {}
 
-            searchImage.addEventListener('load', function () {
-                assets.smaa.search = this
+            this.assets.smaa = {}
+
+            searchImage.addEventListener('load', () => {
+                if (this.assets.smaa) {
+                    this.assets.smaa.search = searchImage
+                }
                 manager.itemEnd('smaa-search')
             })
 
-            areaImage.addEventListener('load', function () {
-                assets.smaa.area = this
+            areaImage.addEventListener('load', () => {
+                if (this.assets.smaa) {
+                    this.assets.smaa.area = areaImage
+                }
                 manager.itemEnd('smaa-area')
             })
 
@@ -1353,16 +1389,14 @@ class App {
 }
 
 const Hyperspeed: FC<HyperspeedProps> = ({ effectOptions = {} }) => {
-
-
+    const mergedOptions: HyperspeedOptions = useMemo(() => ({
+        ...defaultOptions,
+        ...effectOptions,
+    }), [effectOptions])
     const hyperspeed = useRef<HTMLDivElement>(null)
     const appRef = useRef<App | null>(null)
 
     useEffect(() => {
-        const mergedOptions: HyperspeedOptions = {
-            ...defaultOptions,
-            ...effectOptions,
-        }
         if (appRef.current) {
             appRef.current.dispose()
             const container = document.getElementById('lights')
@@ -1390,7 +1424,7 @@ const Hyperspeed: FC<HyperspeedProps> = ({ effectOptions = {} }) => {
                 appRef.current.dispose()
             }
         }
-    }, [effectOptions])
+    }, [mergedOptions])
 
     return <div id="lights" className="h-full w-full" ref={hyperspeed}></div>
 }
