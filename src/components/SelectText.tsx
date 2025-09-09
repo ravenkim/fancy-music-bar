@@ -11,54 +11,63 @@ const SelectText = () => {
 
     return (
         <div className="z-50 flex flex-col gap-4 rounded-md bg-black/50 p-4">
-            <label className="text-white">
-                Text:
+            <label className="text-white flex flex-col gap-1">
+                <span>Text:</span>
                 <textarea
                     value={text}
                     onChange={(e) => setText(e.target.value)}
-                    className="ml-2 resize-y rounded border-none p-2"
+                    className="w-full rounded-md p-3 bg-gray-800 text-white border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder-gray-500"
                     rows={3}
+                    placeholder="Enter your text here..."
                 ></textarea>
             </label>
-            <label className="text-white">
-                X Position Offset:
-                <input
-                    type="number"
-                    value={xOffset}
-                    onChange={(e) => setXOffset(Number(e.target.value))}
-                    className="ml-2 w-20 rounded border-none p-2"
-                />
-                <span>px</span>
+            <label className="text-white flex flex-col gap-1">
+                <span>X Position Offset:</span>
+                <div className="flex items-center">
+                    <input
+                        type="number"
+                        value={xOffset}
+                        onChange={(e) => setXOffset(Number(e.target.value))}
+                        className="ml-2 w-24 rounded-md p-2 bg-gray-800 text-white border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    />
+                    <span className="ml-2">px</span>
+                </div>
             </label>
-            <label className="text-white">
-                Y Position Offset:
-                <input
-                    type="number"
-                    value={yOffset}
-                    onChange={(e) => setYOffset(Number(e.target.value))}
-                    className="ml-2 w-20 rounded border-none p-2"
-                />
-                <span>px</span>
+            <label className="text-white flex flex-col gap-1">
+                <span>Y Position Offset:</span>
+                <div className="flex items-center">
+                    <input
+                        type="number"
+                        value={yOffset}
+                        onChange={(e) => setYOffset(Number(e.target.value))}
+                        className="ml-2 w-24 rounded-md p-2 bg-gray-800 text-white border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    />
+                    <span className="ml-2">px</span>
+                </div>
             </label>
-            <label className="text-white">
-                Font Size:
-                <input
-                    type="number"
-                    value={fontSize}
-                    onChange={(e) => setFontSize(Number(e.target.value))}
-                    className="ml-2 w-20 rounded border-none p-2"
-                />
-                <span>px</span>
+            <label className="text-white flex flex-col gap-1">
+                <span>Font Size:</span>
+                <div className="flex items-center">
+                    <input
+                        type="number"
+                        value={fontSize}
+                        onChange={(e) => setFontSize(Number(e.target.value))}
+                        className="ml-2 w-24 rounded-md p-2 bg-gray-800 text-white border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    />
+                    <span className="ml-2">px</span>
+                </div>
             </label>
-            <label className="text-white">
-                Line Height:
-                <input
-                    type="number"
-                    step="0.1"
-                    value={lineHeight}
-                    onChange={(e) => setLineHeight(Number(e.target.value))}
-                    className="ml-2 w-20 rounded border-none p-2"
-                />
+            <label className="text-white flex flex-col gap-1">
+                <span>Line Height:</span>
+                <div className="flex items-center">
+                    <input
+                        type="number"
+                        step="0.1"
+                        value={lineHeight}
+                        onChange={(e) => setLineHeight(Number(e.target.value))}
+                        className="ml-2 w-24 rounded-md p-2 bg-gray-800 text-white border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    />
+                </div>
             </label>
             <label className="text-white">
                 Text Align:
