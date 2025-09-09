@@ -1,59 +1,14 @@
-
 import React, { type Dispatch, type SetStateAction } from 'react'
 import { ScrollArea } from './ScrollArea.tsx'
-import Prism from "../bg/Prism.tsx";
-import Hyperspeed from "../bg/hyperspeed/Hyperspeed.tsx";
-import {hyperspeedPresets} from "../bg/hyperspeed/hyperspeedPresets.ts";
-import Silk from "../bg/Silk.tsx";
+import { BACKGROUNDS } from '../constants/backgrounds.tsx'
 
 interface SelectBgProps {
     setBg: Dispatch<SetStateAction<string>>
 }
 
-const backgrounds = [
-    { id: 'off', name: 'Off' },
-    { id: 'prism', name: 'Prism' },
-    { id: 'hyperspeed', name: 'Hyperspeed' },
-    { id: 'silk', name: 'Silk' },
-]
-
 const BgPreview: React.FC<{ bgId: string }> = ({ bgId }) => {
-    switch (bgId) {
-        case 'prism':
-            return (
-                <Prism
-                    animationType="rotate"
-                    timeScale={0.5}
-                    height={8}
-                    baseWidth={8}
-                    scale={2}
-                    hueShift={0}
-                    colorFrequency={1}
-                    noise={0}
-                    glow={1}
-                />            )
-        case 'hyperspeed':
-            return (
-                <div className="relative h-full w-full overflow-hidden bg-black">
-                    <Hyperspeed effectOptions={hyperspeedPresets.one} />
-                </div>
-            )
-
-        case 'silk':
-            return (
-                <div className="relative h-full w-full overflow-hidden bg-black">
-                    <Silk
-                        speed={5}
-                        scale={1}
-                        color="#7B7481"
-                        noiseIntensity={1.5}
-                        rotation={0}
-                    />
-                </div>
-            )
-        default:
-            return <div className="h-full w-full bg-gray-900" />
-    }
+    const background = BACKGROUNDS.find((b) => b.id === bgId)
+    return <>{background?.component}</>
 }
 
 const SelectBg: React.FC<SelectBgProps> = ({ setBg }) => {
@@ -61,7 +16,7 @@ const SelectBg: React.FC<SelectBgProps> = ({ setBg }) => {
         <div className="h-full w-full p-4">
             <ScrollArea className="h-full w-full">
                 <div className="grid grid-cols-2 gap-4">
-                    {backgrounds.map((bg) => (
+                    {BACKGROUNDS.map((bg) => (
                         <div
                             key={bg.id}
                             onClick={() => setBg(bg.id)}

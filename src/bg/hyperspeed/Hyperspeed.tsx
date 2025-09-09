@@ -122,7 +122,7 @@ const defaultOptions = {
         rightCars: [0x03b3c3, 0x0e5ea5, 0x324555],
         sticks: 0x03b3c3,
     },
-} as const;
+} as const
 
 function nsin(val: number) {
     return Math.sin(val) * 0.5 + 0.5
@@ -1389,10 +1389,13 @@ class App {
 }
 
 const Hyperspeed: FC<HyperspeedProps> = ({ effectOptions = {} }) => {
-    const mergedOptions: HyperspeedOptions = useMemo(() => ({
-        ...defaultOptions,
-        ...effectOptions,
-    }), [effectOptions])
+    const mergedOptions: HyperspeedOptions = useMemo(
+        () => ({
+            ...defaultOptions,
+            ...effectOptions,
+        }),
+        [effectOptions],
+    )
     const hyperspeed = useRef<HTMLDivElement>(null)
     const appRef = useRef<App | null>(null)
 
